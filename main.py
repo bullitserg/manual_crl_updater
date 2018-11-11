@@ -81,6 +81,7 @@ def get_crl_file(info):
     if not str(info['url']).endswith('.crl'):
         logger.info(log_add('bad_crl') % info)
         info['crl_tmp_file'] = None
+        info['is_download'] = False
         return info['crl_tmp_file']
 
     # пробуем загрузить файл по ссылке
@@ -98,18 +99,22 @@ def get_crl_file(info):
     except requests.exceptions.ReadTimeout:
         info['download_error'] = 'Read timeout'
         logger.info(log_add('cant_download_crl') % info)
+        info['is_download'] = False
         info['crl_tmp_file'] = None
 
     except requests.exceptions.ConnectTimeout:
         info['download_error'] = 'Connect timeout'
         logger.info(log_add('cant_download_crl') % info)
+        info['is_download'] = False
         info['crl_tmp_file'] = None
 
     except Exception as crl_err:
         info['download_error'] = crl_err
         logger.info(log_add('cant_download_crl') % info)
+        info['is_download'] = False
         info['crl_tmp_file'] = None
 
+    info['is_download'] = True
     return info['crl_tmp_file']
 
 
@@ -223,8 +228,12 @@ def check_for_install(crl_info):
     get_crl_db_hash(crl_info)
 
     # если указанный crl скачать не получилось, то ставим метку в базу и переходим к следующей записи
-    if not crl_info['crl_tmp_file']:
+    if not crl_info['is_download']:
         cn_crl.execute_query(update_set_download_fail_query % crl_info)
+        return
+    
+    # если указанный crl отсутствует, то переходим к следующей записи
+    if not crl_info['crl_tmp_file']:
         return
 
     # добавляем в crl_info хэш crl
@@ -248,6 +257,7 @@ def check_for_install(crl_info):
         move(crl_info['crl_tmp_file'], crl_info['crl_wait_file'])
         crl_for_update.append(crl_info)
     except FileNotFoundError:
+
         crl_info['crl_file_hash'] = crl_info['crl_db_hash']
     return
 

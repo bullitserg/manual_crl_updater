@@ -10,7 +10,7 @@ from itertools import count
 from time import sleep
 from datetime import datetime
 from ets.ets_mysql_lib import MysqlConnection as Mc
-from ets.ets_certmanager_logs_parser_v2 import install_crl
+# from ets.ets_certmanager_logs_parser_v2 import install_crl
 from queries import *
 from config import *
 from logger_module import *
@@ -30,9 +30,9 @@ tmp_crl_dir = 'tmp_crl'
 tmp_crl_name = 'tmp.crl'
 
 
-# def install_crl(server, crl_file, **kwargs):
-#     """Тестовая функция установки crl"""
-#     return True, None
+def install_crl(server, crl_file, **kwargs):
+    """Тестовая функция установки crl"""
+    return True, None
 
 
 def show_version():
@@ -243,11 +243,12 @@ def check_for_install(crl_info):
                                      crl_info['subjKeyId'] + '.crl')
 
     # переносим для установки, а если такого нет - значит его уже установили ранее
+    # в этом случае нам нужно взять хэш из базы, иначе установится повторно
     try:
         move(crl_info['crl_tmp_file'], crl_info['crl_wait_file'])
         crl_for_update.append(crl_info)
     except FileNotFoundError:
-        pass
+        crl_info['crl_file_hash'] = crl_info['crl_db_hash']
     return
 
 
@@ -258,6 +259,7 @@ if __name__ == '__main__':
         show_version()
         exit(0)
 
+    namespace.server = 1
     # если указан сервер, то запускаемся как сервис
     if namespace.server:
         try:

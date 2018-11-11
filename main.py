@@ -10,7 +10,7 @@ from itertools import count
 from time import sleep
 from datetime import datetime
 from ets.ets_mysql_lib import MysqlConnection as Mc
-# from ets.ets_certmanager_logs_parser_v2 import install_crl
+from ets.ets_certmanager_logs_parser_v2 import install_crl
 from queries import *
 from config import *
 from logger_module import *
@@ -30,9 +30,9 @@ tmp_crl_dir = 'tmp_crl'
 tmp_crl_name = 'tmp.crl'
 
 
-def install_crl(server, crl_file, **kwargs):
-    """Тестовая функция установки crl"""
-    return True, None
+# def install_crl(server, crl_file, **kwargs):
+#     """Тестовая функция установки crl"""
+#     return True, None
 
 
 def show_version():

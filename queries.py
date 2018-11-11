@@ -6,7 +6,7 @@ WHERE mci.archive = 0
 ;'''
 
 
-get_crl_hash_query = '''SELECT mcii.subjKeyId as crl_db_hash, mcii.crlLocation AS crl_location
+get_crl_hash_query = '''SELECT mcii.crlSha1Hash as crl_db_hash, mcii.crlLocation AS crl_location
 FROM manual_crl_installed_info mcii
 WHERE mcii.archive = 0
 AND mcii.server = %(server)s

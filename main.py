@@ -10,17 +10,17 @@ from itertools import count
 from time import sleep
 from datetime import datetime
 from ets.ets_mysql_lib import MysqlConnection as Mc
-# from ets.ets_certmanager_logs_parser_v2 import install_crl
+from ets.ets_certmanager_logs_parser_v2 import install_crl
 from queries import *
 from config import *
 from logger_module import *
 from languages import *
 
-PROGNAME = 'Acrredited CRL updater'
-DESCRIPTION = '''Скрипт для обновления CRL из xml файла'''
+PROGNAME = 'Manual CRL updater'
+DESCRIPTION = '''Скрипт для обновления дополнительных CRL'''
 VERSION = '1.0'
 AUTHOR = 'Belim S.'
-RELEASE_DATE = '2018-11-10'
+RELEASE_DATE = '2018-11-11'
 
 wait_install_crl_dir = 'wait_install_crl'
 actual_crl_dir = 'actual_crl'
@@ -30,9 +30,9 @@ tmp_crl_dir = 'tmp_crl'
 tmp_crl_name = 'tmp.crl'
 
 
-def install_crl(server, crl_file, **kwargs):
-    """Тестовая функция установки crl"""
-    return True, None
+# def install_crl(server, crl_file, **kwargs):
+#     """Тестовая функция установки crl"""
+#     return True, None
 
 
 def show_version():

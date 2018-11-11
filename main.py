@@ -257,8 +257,7 @@ if __name__ == '__main__':
     if namespace.version:
         show_version()
         exit(0)
-
-    namespace.server = 1
+        
     # если указан сервер, то запускаемся как сервис
     if namespace.server:
         try:

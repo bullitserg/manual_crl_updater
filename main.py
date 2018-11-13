@@ -86,7 +86,9 @@ def get_crl_file(info):
 
     # пробуем загрузить файл по ссылке
     try:
-        response = requests.get(info['url'], timeout=(download_wait_timeout, None), verify=False)
+        response = requests.get(info['url'], timeout=(download_wait_timeout, None), verify=False,
+                                headers={
+                                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'})
         if response.status_code == 200:
             crl_data = response.content
             # записываем данные в файл
